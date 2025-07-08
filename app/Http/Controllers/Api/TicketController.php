@@ -1,18 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ClassifyTicket;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class TicketController extends Controller
 {
     /**
      * Store a new ticket
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
+
     {
         $data = $request->validate([
             'subject' => 'required|string|max:255',
@@ -27,7 +31,7 @@ class TicketController extends Controller
     /**
      * List tickets with search, filter, and pagination
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $query = Ticket::query();
         
@@ -52,7 +56,7 @@ class TicketController extends Controller
     /**
      * Get ticket details
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
         $ticket = Ticket::findOrFail($id);
         return response()->json($ticket);
@@ -61,7 +65,7 @@ class TicketController extends Controller
     /**
      * Update ticket fields: status, category, note
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
         $ticket = Ticket::findOrFail($id);
 
@@ -83,7 +87,7 @@ class TicketController extends Controller
     /**
      * Dispatch classification job for the ticket
      */
-    public function classify(string $id)
+    public function classify(string $id): JsonResponse
     {
         $ticket = Ticket::findOrFail($id);
 
@@ -95,7 +99,7 @@ class TicketController extends Controller
     /**
      * Get stats for dashboard
      */
-    public function stats()
+    public function stats(): JsonResponse
     {
         $statusCounts = Ticket::selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
@@ -114,7 +118,7 @@ class TicketController extends Controller
     /**
      * Delete a ticket
     */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();

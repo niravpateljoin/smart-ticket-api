@@ -1,15 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Ticket;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\RateLimiter;
 use OpenAI;
 
 class TicketClassifier
 {
     public function classify(Ticket $ticket): array
     {
+        $key = 'openai-api-global-limit';
+        if (!RateLimiter::attempt($key, 10)) {
+            return [
+                'category' => 'question',
+                'explanation' => 'Rate limit exceeded. Try again later.',
+                'confidence' => 0.0,
+            ];
+        }
+
         if (!config('openai.api_key') || !config('services.openai.classify_enabled')) {
             return $this->mockResult();
         }
@@ -17,16 +29,16 @@ class TicketClassifier
         $openai = OpenAI::client(config('openai.api_key'));
 
         $prompt = <<<PROMPT
-You are an AI assistant. Given the ticket subject and body, classify the category.
+            You are an AI assistant. Given the ticket subject and body, classify the category.
 
-Return JSON only with the following keys:
-- category: one of [bug, feature, question]
-- explanation: brief reason for your decision
-- confidence: a float from 0 to 1
+            Return JSON only with the following keys:
+            - category: one of [bug, feature, question]
+            - explanation: brief reason for your decision
+            - confidence: a float from 0 to 1
 
-Subject: {$ticket->subject}
-Body: {$ticket->body}
-PROMPT;
+            Subject: {$ticket->subject}
+            Body: {$ticket->body}
+            PROMPT;
 
         $response = $openai->chat()->create([
             'model' => 'gpt-4',
