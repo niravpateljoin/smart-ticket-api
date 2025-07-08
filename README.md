@@ -59,6 +59,34 @@ npm run dev
 ```bash
 npm run build
 ```
+### **Run the Queue Worker**
+
+To ensure that your application processes background jobs, such as AI classification tasks, you need to start the queue worker. Run the following command in the terminal:
+
+```bash
+php artisan queue:work
+```
+
+This command will continuously listen for new jobs in the queue and process them in the background. It's important to keep this running for the system to handle tasks asynchronously.
+
+### **For production or server environments (using crontab)**
+
+To automatically start the queue worker periodically on the server, you can add the following cron job:
+
+1. Open the crontab editor:
+
+```bash
+crontab -e
+```
+
+2. Add the following line to ensure that the queue worker is always running:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan queue:work >> /dev/null 2>&1
+```
+
+This will run the `php artisan queue:work` command every minute to make sure jobs are processed.
+
 
 ## 🧪 1. Set Base URL
 
