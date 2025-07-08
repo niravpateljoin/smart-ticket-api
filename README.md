@@ -206,6 +206,21 @@ php artisan queue:work
 
 ---
 
+## ❌ 8. Delete Ticket
+
+**Endpoint:**  
+DELETE /api/tickets/{id}
+
+**Example Response:**
+```json
+{
+  "message": "Ticket deleted successfully."
+}
+
+```
+
+---
+
 ## 🧾 8. Bulk Classify Tickets via Console Command
 
 This Laravel Artisan command dispatches the AI classification job for all tickets that do not have an explanation.

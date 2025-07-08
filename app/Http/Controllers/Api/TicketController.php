@@ -110,4 +110,16 @@ class TicketController extends Controller
             'by_category' => $categoryCounts,
         ]);
     }
+
+    /**
+     * Delete a ticket
+    */
+    public function destroy(string $id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->delete();
+
+        return response()->json(['message' => 'Ticket deleted successfully.']);
+    }
+
 }

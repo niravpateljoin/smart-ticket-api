@@ -9,6 +9,7 @@ Route::prefix('tickets')->group(function () {
     Route::get('/', [TicketController::class, 'index']);
     Route::get('/{id}', [TicketController::class, 'show']);
     Route::patch('/{id}', [TicketController::class, 'update']);
+    Route::delete('/{id}', [TicketController::class, 'destroy']);
     Route::post('/{id}/classify', [TicketController::class, 'classify']);
 });
 
