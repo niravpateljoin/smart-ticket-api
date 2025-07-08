@@ -1,0 +1,83 @@
+:root {
+    --bg-color: #fff;
+    --text-color: #111;
+    --card-bg: #f9f9f9;
+    --btn-bg: #007bff;
+    --btn-text: #fff;
+    --border-color: #ccc;
+}
+
+.dark {
+    --bg-color: #121212;
+    --text-color: #eee;
+    --card-bg: #1e1e1e;
+    --btn-bg: #1e90ff;
+    --btn-text: #fff;
+    --border-color: #555;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+input, select, textarea {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.app__header, .app__nav {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.app__header--title {
+    text-align: center;
+}
+
+.toggle-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+/*button {*/
+/*    background-color: var(--text-color);*/
+/*    color: var(--bg-color);*/
+/*    border: none;*/
+/*    padding: 0.5rem 1rem;*/
+/*    font-weight: bold;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.2s ease;*/
+/*}*/
+
+button {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+button:disabled {
+    background-color: #999;
+    color: #666;
+    cursor: not-allowed;
+}
