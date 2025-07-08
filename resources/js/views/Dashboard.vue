@@ -1,16 +1,24 @@
 <template>
     <div class="dashboard__container">
-
+        <h2 class="dashboard__title">Dashboard Overview</h2>
         <div v-if="stats">
             <h3>Status Counts</h3>
-            <ul>
-                <li v-for="(count, status) in stats.by_status" :key="status">
-                    {{ status }}: {{ count }}
-                </li>
-            </ul>
+            <div class="dashboard__cards">
+                <div
+                    class="dashboard__card"
+                    v-for="(count, status, i) in stats.by_status"
+                    :key="status"
+                    :class="colorClass(i)"
+                >
+                    <div class="dashboard__card-value">{{ count }}</div>
+                    <div class="dashboard__card-label">{{ status.toUpperCase() }}</div>
+                </div>
+            </div>
 
             <h3>Category Chart</h3>
-            <canvas ref="categoryChart" width="400" height="200"></canvas>
+            <div class="dashboard__chart-card">
+                <canvas ref="categoryChart" width="400" height="200"></canvas>
+            </div>
         </div>
     </div>
 </template>
@@ -33,7 +41,7 @@ Chart.register(
     CategoryScale,
     LinearScale,
     Tooltip,
-    Legend
+    Legend,
 );
 
 export default {
@@ -86,6 +94,10 @@ export default {
                 },
             });
         },
+        colorClass(index) {
+            const colors = ['teal', 'blue', 'purple'];
+            return colors[index % colors.length];
+        }
     },
 };
 </script>

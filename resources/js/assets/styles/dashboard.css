@@ -3,3 +3,56 @@
     background-color: var(--bg-color);
     color: var(--text-color);
 }
+
+.dashboard__title {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.dashboard__cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.dashboard__card {
+    flex: 1 1 180px;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+.dashboard__card:hover {
+    transform: translateY(-4px);
+}
+.dashboard__card-value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.dashboard__card-label {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+    letter-spacing: 1px;
+}
+
+/* Color classes */
+.teal    { background-color: #008080; }
+.blue    { background-color: #007bff; }
+.purple  { background-color: #6f42c1; }
+
+.dashboard__chart-card {
+    width: 50%;
+    background-color: var(--card-bg, #fff);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 1rem 0;
+}
+
+.dashboard__chart-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

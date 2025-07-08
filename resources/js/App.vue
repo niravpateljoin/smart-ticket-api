@@ -4,7 +4,10 @@
             <h1 class="app__header--title">Smart Ticket Triage</h1>
             <div class="toggle-btn-container">
                 <button @click="toggleTheme" class="toggle-btn">
-                    Toggle {{ theme === 'light' ? 'Dark' : 'Light' }} Theme
+                    <span class="toggle-btn__icon">
+                        <i :class="theme === 'light' ? 'fas fa-moon' : 'fas fa-sun'"></i>
+                    </span>
+                    <span class="toggle-btn__label" >{{ theme === 'light' ? 'Dark' : 'Light' }}</span>
                 </button>
             </div>
         </header>
