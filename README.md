@@ -27,22 +27,35 @@ composer install
 cd smart-ticket-api
 ```
 
-3. Run database migrations and seeders:
+3. Create the `.env` file:
+   - Copy the contents of `.env.example` into a new `.env` file:
+     ```bash
+     cp .env.example .env
+     ```
+   - If you are using Windows, use this command instead:
+     ```bash
+     copy .env.example .env
+     ```
+
+4. Configure the `.env` file:
+   - Open the `.env` file and configure any necessary variables such as your OpenAI API key, database credentials, and other environment-specific settings.
+
+5. Run database migrations and seeders:
 ```bash
 php artisan migrate --seed
 ```
 
-4. Install Node.js dependencies:
+6. Install Node.js dependencies:
 ```bash
 npm install
 ```
 
-5. Compile frontend assets (for development):
+7. Compile frontend assets (for development):
 ```bash
 npm run dev
 ```
 
-6. For production build:
+8. For production build:
 ```bash
 npm run build
 ```
@@ -193,6 +206,35 @@ php artisan queue:work
 
 ---
 
+### **Run the Queue Worker**
+
+To ensure that your application processes background jobs, such as AI classification tasks, you need to start the queue worker. Run the following command in the terminal:
+
+```bash
+php artisan queue:work
+```
+
+This command will continuously listen for new jobs in the queue and process them in the background. It's important to keep this running for the system to handle tasks asynchronously.
+
+### **For production or server environments (using crontab)**
+
+To automatically start the queue worker periodically on the server, you can add the following cron job:
+
+1. Open the crontab editor:
+
+```bash
+crontab -e
+```
+
+2. Add the following line to ensure that the queue worker is always running:
+
+```bash
+* * * * * cd /path-to-your-project && php artisan queue:work >> /dev/null 2>&1
+```
+
+This will run the `php artisan queue:work` command every minute to make sure jobs are processed.
+
+
 ## ⏰ 9. Schedule with Cron
 
 To run the bulk classification periodically, add the following to your crontab:
@@ -230,3 +272,11 @@ OPENAI_ORGANIZATION=your-org-id-here
 ```
 
 Make sure both `OPENAI_API_KEY` and `OPENAI_ORGANIZATION` are configured before running classification jobs.
+
+
+## 📸 11. Screenshot
+
+![Screenshot of the Dashboard](doc/images/image1.png)
+![Screenshot of the Dashboard](doc/images/image2.png)
+![Screenshot of the Dashboard](doc/images/image3.png)
+![Screenshot of the Dashboard](doc/images/image4.png)
