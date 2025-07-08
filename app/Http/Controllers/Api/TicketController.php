@@ -30,8 +30,7 @@ class TicketController extends Controller
     public function index(Request $request)
     {
         $query = Ticket::query();
-
-        // Optional filters
+        
         if ($search = $request->input('search')) {
             $query->where('subject', 'like', "%{$search}%")
                   ->orWhere('body', 'like', "%{$search}%");
