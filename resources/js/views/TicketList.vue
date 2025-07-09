@@ -26,8 +26,8 @@
         <table class="ticket-list__table" v-if="paginatedTickets.length">
             <thead>
             <tr class="ticket-list__header">
-                <th>Subject</th>
-                <th>Description</th>
+                <th class="ticket-list__header--subject">Subject</th>
+                <th class="ticket-list__header--description">Description</th>
                 <th>Status</th>
                 <th>Category</th>
                 <th>AI Explanation</th>
@@ -37,8 +37,8 @@
             </thead>
             <tbody>
             <tr v-for="ticket in paginatedTickets" :key="ticket.id" class="ticket-list__row">
-                <td>{{ ticket.subject }}</td>
-                <td>{{ ticket.body }}</td>
+                <td class="ticket-list__row--subject">{{ ticket.subject }}</td>
+                <td class="ticket-list__row--description">{{ ticket.body }}</td>
                 <td>{{ ticket.status }}</td>
                 <td>
                     <select
@@ -50,13 +50,32 @@
                         <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
                     </select>
                 </td>
-                <td>{{ ticket.explanation }}</td>
+                <td class="explanation__container">
+                    <i class="fas fa-info-circle explanation__icon"></i>
+                    <span class="explanation__icon-text">
+                        {{ ticket.explanation }}
+                    </span>
+                </td>
                 <td>
                   {{ (ticket.confidence || 0).toFixed(2) }}
                 </td>
                 <td>
-                    <button class="ticket-list__btn ticket-list__btn--view" @click="goToDetail(ticket.id)">
-                        View
+                    <button class="ticket-list__btn ticket-list__btn--view" @click="openPreview(ticket)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="ticket-list__btn ticket-list__btn--edit" @click="openEdit(ticket)">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="ticket-list__btn ticket-list__btn--delete" @click="confirmDeleteTicket($event, ticket.id)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="ticket-list__btn ticket-list__btn--classify" @click="classify(ticket)" :disabled="classifyingId === ticket.id">
+                        <span v-if="classifyingId === ticket.id">
+                            <i class="fas fa-spinner fa-spin"></i>classifying...
+                        </span>
+                        <span v-else>
+                            Classify
+                        </span>
                     </button>
                 </td>
             </tr>
@@ -80,16 +99,30 @@
             @close="showForm = false"
             @submit="createTicket"
         />
+        <TicketPreviewModal
+            v-if="previewTicket"
+            :ticket="previewTicket"
+            @close="closePreview"
+        />
+        <TicketEditModal
+            v-if="editTicketData"
+            :ticket="editTicketData"
+            :categories="categories"
+            @close="closeEdit"
+            @submit="submitEdit"
+        />
     </div>
 </template>
 
 <script>
 import TicketForm from '@/components/TicketForm.vue';
+import TicketPreviewModal from '@/components/TicketPreviewModal.vue';
+import TicketEditModal from '@/components/TicketEditModal.vue';
 import axios from 'axios';
 
 export default {
     name: 'TicketList',
-    components: { TicketForm },
+    components: { TicketForm, TicketPreviewModal, TicketEditModal },
     data() {
         return {
             tickets: [],
@@ -99,6 +132,9 @@ export default {
             currentPage: 1,
             perPage: 5,
             categories: ['bug', 'feature', 'question', 'other'],
+            previewTicket: null,
+            editTicketData: null,
+            classifyingId: null,
         };
     },
     computed: {
@@ -141,6 +177,11 @@ export default {
             const res = await axios.get('/api/tickets');
             this.tickets = res.data.data || res.data;
         },
+        async createTicket(ticket) {
+            await axios.post('/api/tickets', ticket);
+            this.showForm = false;
+            await this.fetchTickets();
+        },
         async confirmCategoryChange(event, ticketId) {
             const newCategory = event.target.value;
             const confirmed = window.confirm(`Are you sure you want to change the category to "${newCategory}"?`);
@@ -156,13 +197,52 @@ export default {
             await axios.patch(`/api/tickets/${ticketId}`, { category });
             await this.fetchTickets();
         },
-        async createTicket(ticket) {
-            await axios.post('/api/tickets', ticket);
-            this.showForm = false;
-            await this.fetchTickets();
+        openPreview(ticket) {
+            this.previewTicket = ticket;
         },
-        goToDetail(id) {
-            this.$router.push(`/tickets/${id}`);
+        closePreview() {
+            this.previewTicket = null;
+        },
+        async confirmDeleteTicket(event, ticketId) {
+            const confirmed = window.confirm("Are you sure you want to remove the ticket?");
+            if (confirmed) {
+                await axios.delete(`/api/tickets/${ticketId}`);
+            }
+            this.fetchTickets();
+        },
+        openEdit(ticket) {
+            this.editTicketData = { ...ticket };
+        },
+        closeEdit() {
+            this.editTicketData = null;
+        },
+        async submitEdit(updatedTicket) {
+            console.log(updatedTicket)
+            try {
+                await axios.patch(`/api/tickets/${updatedTicket.id}`, {
+                    subject: updatedTicket.subject,
+                    body: updatedTicket.body,
+                    status: updatedTicket.status,
+                    category: updatedTicket.category
+                });
+                this.editTicketData = null;
+                await this.fetchTickets();
+            } catch (error) {
+                console.error("Error updating ticket:", error);
+            }
+        },
+        async classify(ticket) {
+            this.classifyingId = ticket.id;
+            try {
+                await axios.post(`/api/tickets/${ticket.id}/classify`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                alert('Classification successful!');
+                await this.fetchTickets();
+            } catch (e) {
+                alert('Classification failed. Please try again.');
+            } finally {
+                this.classifyingId = null;
+            }
         },
         downloadCsv() {
             if (!this.tickets.length) return;
@@ -182,7 +262,7 @@ export default {
             link.href = URL.createObjectURL(blob);
             link.setAttribute('download', 'tickets.csv');
             link.click();
-        }
+        },
     }
 };
 </script>

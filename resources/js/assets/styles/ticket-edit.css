@@ -1,0 +1,28 @@
+label {
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+}
+
+input, textarea, select {
+    width: 100%;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.ticket-edit__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.ticket-edit__actions button {
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

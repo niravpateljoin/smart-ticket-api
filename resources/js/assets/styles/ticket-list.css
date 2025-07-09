@@ -32,17 +32,6 @@
     background-color: #27ae60;
 }
 
-.ticket-list__btn--view {
-    background-color: #8e44ad;
-    color: var(--btn-text);
-}
-
-.ticket-list__btn--classify {
-    background-color: #e67e22;
-    margin-left: 0.5rem;
-    color: var(--btn-text);
-}
-
 .ticket-list__table {
     width: 100%;
     border-collapse: collapse;
@@ -105,3 +94,89 @@
     font-weight: bold;
 }
 
+.explanation__container {
+    position: relative;
+}
+
+.explanation__icon {
+    color: var(--text-color);
+    cursor: help;
+}
+
+.explanation__icon-text {
+    visibility: hidden;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    text-align: left;
+    border-radius: 6px;
+    padding: 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 0.8rem;
+    min-width: 200px;
+}
+
+.explanation__container:hover .explanation__icon-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* View (blue) */
+.ticket-list__btn--view {
+    background-color: #3498db;
+}
+
+.ticket-list__btn--view:hover {
+    background-color: #2980b9;
+}
+
+/* Edit (orange) */
+.ticket-list__btn--edit {
+    background-color: #f39c12;
+}
+
+.ticket-list__btn--edit:hover {
+    background-color: #e67e22;
+}
+
+/* Delete (red) */
+.ticket-list__btn--delete {
+    background-color: #e74c3c;
+}
+
+.ticket-list__btn--delete:hover {
+    background-color: #c0392b;
+}
+
+/* Classify (green) */
+.ticket-list__btn--classify {
+    background-color: #2ecc71;
+}
+
+.ticket-list__btn--classify:hover {
+    background-color: #27ae60;
+}
+
+.ticket-list__btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.ticket-list__header--subject, .ticket-list__row--subject {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ticket-list__header--description, .ticket-list__row--description {
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

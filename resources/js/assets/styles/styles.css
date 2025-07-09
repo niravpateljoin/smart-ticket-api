@@ -24,6 +24,16 @@ body {
     font-family: sans-serif;
 }
 
+.app__header, .app__nav {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app__header--title {
+    text-align: center;
+}
+
 input, select, textarea {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -34,26 +44,10 @@ input, select, textarea {
     width: 100%;
 }
 
-.app__header, .app__nav {
-    background: var(--card-bg);
-    padding: 1rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
 a {
     color: var(--text-color);
     text-decoration: none;
     margin-right: 1rem;
-}
-
-.app__header--title {
-    text-align: center;
-}
-
-.toggle-btn-container {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
 }
 
 button {
@@ -85,6 +79,12 @@ button:disabled {
     transition: background-color 0.3s;
 }
 
+.toggle-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
 .toggle-btn__icon {
     display: flex;
     align-items: center;
@@ -94,4 +94,25 @@ button:disabled {
 .toggle-btn__label {
     display: flex;
     align-items: center;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }

@@ -3,7 +3,7 @@
         <h2 class="dashboard__title">Dashboard Overview</h2>
         <div v-if="stats">
             <h3>Status Counts</h3>
-            <div class="dashboard__cards">
+            <div class="dashboard__card--container">
                 <div
                     class="dashboard__card"
                     v-for="(count, status, i) in stats.by_status"

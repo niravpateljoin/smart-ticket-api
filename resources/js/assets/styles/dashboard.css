@@ -9,7 +9,7 @@
     font-size: 1.5rem;
 }
 
-.dashboard__cards {
+.dashboard__card--container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
@@ -25,13 +25,16 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
 }
+
 .dashboard__card:hover {
     transform: translateY(-4px);
 }
+
 .dashboard__card-value {
     font-size: 2rem;
     font-weight: bold;
 }
+
 .dashboard__card-label {
     font-size: 0.9rem;
     margin-top: 0.25rem;

@@ -34,7 +34,7 @@ class TicketController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Ticket::query();
-        
+
         if ($search = $request->input('search')) {
             $query->where('subject', 'like', "%{$search}%")
                   ->orWhere('body', 'like', "%{$search}%");
@@ -70,6 +70,8 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
 
         $data = $request->validate([
+            'subject' => 'nullable|string|max:255',
+            'body' => 'nullable|string',
             'status' => 'nullable|in:open,pending,closed',
             'category' => 'nullable|string|max:50',
             'note' => 'nullable|string',
